@@ -1,19 +1,22 @@
 import numpy as np
 import scipy
+import math
 
 #from scipy.constants import G as G
 
 G = scipy.constants.G * 1e8
 EPSILON_SOFTENING = 1e-5
-N = 18
+N = 5
 
 BODY_SIZE = 15
 BODY_MASS = 1
 
 SCREEN_SIZE = 720
-INIT_SPEED = 0.1
+INIT_SPEED = 0.3
+WALL_FIELD_STRENGTH = 20
+WALL_FIELD_EXPONENT = 8
 
-POINTS_ON_LINE = 450
+POINTS_ON_LINE = 200
 
 def cart2screen(x, y):
     return(
@@ -48,3 +51,12 @@ def calcattractions(positions, masses):
     accelerations = -G * (inv_sq_weighted[:, :, np.newaxis] * unit).sum(axis=1)
 
     return accelerations
+
+def field(x, y):
+    magnitude = math.sin(x**2 + y**2) ** WALL_FIELD_EXPONENT * WALL_FIELD_STRENGTH
+    
+    angle = cart2pol(x, y)[1] + math.pi
+    
+    return(
+        pol2cart(magnitude, angle)
+    )

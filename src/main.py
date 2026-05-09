@@ -21,14 +21,9 @@ for i in range(0, utils.N):
     velocities[i] = utils.pol2cart(utils.INIT_SPEED, math.pi/2 + i*(2*math.pi/utils.N))
     masses[i] = utils.BODY_MASS
 
-print("positions")
-print(positions)
-
-print(
-    utils.calcattractions(
-        positions, masses
-    )
-)
+print(utils.field(0, 0))
+print(utils.field(0.5,0))
+print(utils.field(0.5, 0.5))
 
 traces = []
 
@@ -45,21 +40,23 @@ while running:
             running = False
 
     accelerations = utils.calcattractions(positions, masses)
+    accelerations += np.array([utils.field(x, y) for x, y in positions])
     velocities += accelerations * dt
     positions += velocities * dt
 
     screen.fill("black")
 
     for i in range(0, utils.N):
-        pos = pygame.Vector2(utils.cart2screen(positions[i][0], positions[i][1]))
-        pygame.draw.circle(screen, "white", pos, utils.BODY_SIZE)
-
-    for i in range(0, utils.N):
         traces[i].popleft()
         traces[i].append(utils.cart2screen(positions[i][0],positions[i][1]))
         #print(traces[i])
-        pygame.draw.lines(screen, "gray", False, traces[i], width=2)
+        pygame.draw.lines(screen, pygame.Color(80,80,80), False, traces[i], width=2)
 
+    for i in range(0, utils.N):
+        pos = pygame.Vector2(utils.cart2screen(positions[i][0], positions[i][1]))
+        pygame.draw.circle(screen, "white", pos, utils.BODY_SIZE)
+
+    
     pygame.display.flip()
 
 
