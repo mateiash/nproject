@@ -51,6 +51,9 @@ while running:
         accelerations += np.array([utils.pointfield(x, y) for x, y in positions])
     
     velocities += accelerations * dt
+    for i in range(0, utils.N):
+        if(np.linalg.norm(velocities[i]) >= utils.DECAY_TRESHOLD):
+            velocities[i] *= (1 - utils.SPEED_DECAY)
     positions += velocities * dt
 
     screen.fill("black")
