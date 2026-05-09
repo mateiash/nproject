@@ -6,15 +6,15 @@ import pygame
 #from scipy.constants import G as G
 
 G = scipy.constants.G * 1e8
-EPSILON_SOFTENING = 5e-3
-N = 5
+EPSILON_SOFTENING = 1e-2
+N = 6
 
 BODY_SIZE = 8
-BODY_MASS = 1
-INIT_SPEED = 0.3
+BODY_MASS = 3.5
+INIT_SPEED = 0.4
 
-SPEED_DECAY = 0.02
-DECAY_TRESHOLD = 2.
+SPEED_DECAY = 0.05
+DECAY_TRESHOLD = 0.75
 
 SCREEN_SIZE = 720
 
@@ -22,7 +22,7 @@ WALL_FIELD_STRENGTH = 12
 WALL_FIELD_EXPONENT = 8
 
 POINT_FIELD_ENABLED = False
-POINT_FIELD_STRENGTH = 0.4
+POINT_FIELD_STRENGTH = 1
 POINT_FIELD_EPSILON_SOFTENING = 1e-1
 
 POINTS_ON_LINE = 200
@@ -89,5 +89,5 @@ def pointfield(x, y):
     distance = np.linalg.norm(displacement)
     angle = cart2pol(displacement[0], displacement[1])[1]
     return(
-        pol2cart(1/(distance + POINT_FIELD_EPSILON_SOFTENING**2)* POINT_FIELD_STRENGTH, angle)
+        pol2cart(POINT_FIELD_STRENGTH, angle)
     )
