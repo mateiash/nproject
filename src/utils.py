@@ -4,7 +4,7 @@ import scipy
 #from scipy.constants import G as G
 
 G = scipy.constants.G * 1e8
-
+EPSILON_SOFTENING = 1e-5
 N = 18
 
 BODY_SIZE = 15
@@ -41,7 +41,7 @@ def calcattractions(positions, masses):
     unit[np.isnan(unit)] = 0
 
     with np.errstate(divide='ignore'):
-        inv_sq = np.where(distances == 0, 0, 1 / distances ** 2)
+        inv_sq = np.where(distances == 0, 0, 1 / (distances ** 2 + EPSILON_SOFTENING ** 2))
 
     inv_sq_weighted = inv_sq * masses[np.newaxis, :]
 
