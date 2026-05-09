@@ -38,9 +38,18 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                utils.POINT_FIELD_ENABLED = not utils.POINT_FIELD_ENABLED
+                print(f"point field toggled: {utils.POINT_FIELD_ENABLED}")
+        
 
     accelerations = utils.calcattractions(positions, masses)
     accelerations += np.array([utils.field(x, y) for x, y in positions])
+    
+    if utils.POINT_FIELD_ENABLED:
+        accelerations += np.array([utils.pointfield(x, y) for x, y in positions])
+    
     velocities += accelerations * dt
     positions += velocities * dt
 
